@@ -8,6 +8,9 @@ using namespace std;
 void log(const string &text) {
   ofstream data("data.txt", ios::app);
 
-  if (data.is_open())
+  if (data.is_open()) {
     data << text;
+  } else {
+    cout << "Failed to open file.";
+  }
 }
