@@ -5,11 +5,11 @@
 
 using namespace std;
 
-void log(const string &text) {
-  ofstream data("data.txt", ios::app);
+void log(string &storage) {
+  ofstream data("data.txt", ios::trunc);
 
   if (data.is_open()) {
-    data << text;
+    data << storage;
   } else {
     cout << "Failed to open file.";
   }

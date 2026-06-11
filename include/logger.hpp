@@ -1,5 +1,7 @@
 #pragma once
 
-#include <string>
+#include <iostream>
 
-void log(const std::string &text);
+using namespace std;
+
+void log(const string &text);
