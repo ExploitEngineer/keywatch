@@ -1,18 +1,27 @@
-CXX := x86_64-w64-mingw32-g++
-CXXFLAGS := -std=c++20 -Wall -Wextra -Wpedantic -Iinclude
+CXX = g++
+CXXFLAGS = -std=c++17 -Wall -Wextra -O2 -Iinclude
+LDFLAGS = -luser32 -lpsapi
 
-SRC := $(shell find src -name '*.cpp')
-OBJ := $(SRC:src/%.cpp=build/%.o)
-TARGET := build/keywatch.exe
+TARGET = keywatch
+SOURCES = src/main.cpp src/app/keylogger.cpp src/input/key_to_string.cpp \
+          src/input/modifiers.cpp src/output/logger.cpp
+OBJECTS = $(SOURCES:.cpp=.o)
+
+.PHONY: all clean run
 
 all: $(TARGET)
 
-$(TARGET): $(OBJ)
-	$(CXX) $(CXXFLAGS) $^ -o $@
+$(TARGET): $(OBJECTS)
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
-build/%.o: src/%.cpp
-	@mkdir -p $(dir $@)
+%.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
+run: $(TARGET)
+	./$(TARGET)
+
 clean:
-	rm -rf build
+	rm -f $(OBJECTS) $(TARGET)
+
+debug: CXXFLAGS += -g -DDEBUG
+debug: clean all
